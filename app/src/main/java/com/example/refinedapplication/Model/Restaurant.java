@@ -77,12 +77,19 @@ public class Restaurant implements Parcelable{
     }
 
     //Constructor
-    public Restaurant(String name, String address, boolean onTable, boolean delivery, boolean takeAway, String phone, String web) {
+    public Restaurant(String name, String address, String phone, String web, boolean onTable, boolean delivery, boolean takeAway) {
         this.name = name;
         this.address = address;
+        this.phone = phone;
+        this.web = web;
         this.onTable = onTable;
         this.delivery = delivery;
         this.takeAway = takeAway;
+    }
+
+    public Restaurant(String name, String address, String phone, String web) {
+        this.name = name;
+        this.address = address;
         this.phone = phone;
         this.web = web;
     }

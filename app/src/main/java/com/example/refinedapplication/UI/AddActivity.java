@@ -34,7 +34,7 @@ public class AddActivity extends AppCompatActivity {
         boolean takeaway = addBinding.takeAwayID.isChecked();
         String web = addBinding.webID.getText().toString();
         String phone = addBinding.phoneID.getText().toString();
-        Restaurant restaurant = new Restaurant(name, address, ontable, delivery, takeaway, web, phone);
+        Restaurant restaurant = new Restaurant(name, address, web, phone, ontable, delivery, takeaway);
         restaurantsListViewModel.addRestaurant(restaurant);
         restaurantsListViewModel = ((MyApp)getApplication()).getRestaurantsListViewModel();
         finish();

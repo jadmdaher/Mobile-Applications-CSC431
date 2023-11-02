@@ -33,8 +33,12 @@ public class MainActivity extends AppCompatActivity {
         //Create an intance of RestaurantsListViewModel
         restaurantsListViewModel = new ViewModelProvider(this).get(RestaurantsListViewModel.class);
         ((MyApp)getApplication()).restaurantsListViewModel = restaurantsListViewModel;
+        //Add some restaurants
+        //addSomeRestaurants();
         //Set Text
         mainBinding.totalRestaurant.setText("Total Restaurants: " + restaurantsListViewModel.size());
+        //Set view of screen to be activity_main.xml
+        setContentView(mainBinding.getRoot());
         //Initialize restaurantArrayAdapter
         restaurantArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, restaurantsListViewModel.getRestaurantsList());
 

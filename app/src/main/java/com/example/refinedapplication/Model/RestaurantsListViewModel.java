@@ -16,11 +16,16 @@ public class RestaurantsListViewModel extends ViewModel {
     }
 
     public List<Restaurant> getRestaurantsList() {
-        List<Restaurant> immutableRestaurantsList = Collections.unmodifiableList(restaurantsList);
-        return immutableRestaurantsList;
+        //List<Restaurant> immutableRestaurantsList = Collections.unmodifiableList(restaurantsList);
+        return restaurantsList;
     }
 
     public int size(){
         return counter;
+    }
+
+    public void delete(int position) {
+        restaurantsList.remove(position);
+        counter--;
     }
 }

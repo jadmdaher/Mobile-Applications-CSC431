@@ -62,13 +62,47 @@ public class RestaurantDBHelper extends SQLiteOpenHelper {
             boolean onTable = cursor.getInt(5) == 1;
             boolean delivery = cursor.getInt(6) == 1;
             boolean takeaway = cursor.getInt(7) == 1;
-            Restaurant restaurant = new Restaurant(name, address, onTable, delivery, takeaway, web, phone);
+            Restaurant restaurant = new Restaurant(name, address, web, phone, onTable, delivery, takeaway);
             restaurant.setDelivery(delivery);
             restaurant.setOnTable(onTable);
             restaurant.setTakeAway(takeaway);
             restaurant.setId_(id_);
             restaurantList.add(restaurant);
+            cursor.moveToNext();
         }
         return restaurantList;
+    }
+
+    public void updateRestaurant(Restaurant restaurant){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("name", restaurant.getName());
+        contentValues.put("address", restaurant.getAddress());
+        contentValues.put("phone", restaurant.getPhone());
+        contentValues.put("web", restaurant.getWeb());
+        contentValues.put("onTable", restaurant.isOnTable());
+        contentValues.put("delivery", restaurant.isDelivery());
+        contentValues.put("takeaway", restaurant.isTakeAway());
+
+        String whereClause = "_id = ?";
+        String[] whereArgs = new String[]{String.valueOf(restaurant.getId_())};
+
+        getWritableDatabase().update("restaurants", contentValues, whereClause, whereArgs);
+    }
+
+    public void deleteRestaurant(Restaurant restaurant){
+        String whereClause = "_id = ?";
+        String[] whereArgs = new String[]{String.valueOf(restaurant.getId_())};
+
+        getWritableDatabase().delete("restaurants", whereClause, whereArgs);
+    }
+
+    public int restaurantCount(){
+        String query = "SELECT  count(*) as count FROM restaurants";
+        Cursor cursor = getReadableDatabase().rawQuery(query, null);
+
+        cursor.moveToFirst();
+        int count = cursor.getInt(0);
+
+        return count;
     }
 }
