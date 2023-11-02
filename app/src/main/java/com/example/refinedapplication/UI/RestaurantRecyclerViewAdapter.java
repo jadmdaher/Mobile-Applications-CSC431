@@ -1,10 +1,15 @@
 package com.example.refinedapplication.UI;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.refinedapplication.Model.Restaurant;
+import com.example.refinedapplication.R;
 import com.example.refinedapplication.databinding.ItemViewBinding;
 import android.content.Context;
 import android.graphics.Color;
@@ -41,6 +46,8 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Restaura
         holder.itemViewBinding.tableIcon.setColorFilter(onTableColor);
         holder.itemViewBinding.dishIcon.setColorFilter(deliveryColor);
         holder.itemViewBinding.motorcycleIcon.setColorFilter(takeawayColor);
+
+        holder.itemViewBinding.burgerButton.setOnClickListener(v->holder.itemViewBinding.myDrawerLayout.openDrawer(holder.itemViewBinding.navView));
     }
 
     @Override

@@ -17,19 +17,34 @@
         android:padding="16dp">
 
         <!-- Restaurant Name with Background Rectangle -->
-        <TextView
-            android:id="@+id/rowName"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:orientation="horizontal"
+            android:id="@+id/nameLayout"
             android:background="#D3D3D3"
-            android:text="Restaurant Name"
-            android:textSize="24sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/addressLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" >
+            <TextView
+                android:id="@+id/rowName"
+                android:layout_width="340dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:text="Restaurant Name"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:gravity="start"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/burger_icon"
+                android:id="@+id/burgerButton"
+                android:gravity="end"
+                android:clickable="true">
+            </ImageView>
+        </LinearLayout>
 
         <!-- Address -->
         <LinearLayout
@@ -39,7 +54,7 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rowName">
+            app:layout_constraintTop_toBottomOf="@id/nameLayout">
 
             <TextView
                 android:id="@+id/addressText"
@@ -161,28 +176,18 @@
             app:layout_constraintTop_toTopOf="@id/serviceLabel" />
 
         <Button
-            android:id="@+id/deleteButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Delete"
-            app:layout_constraintEnd_toStartOf="@id/callButton"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/serviceLabel" />
-
-        <Button
             android:id="@+id/callButton"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="Call"
             app:layout_constraintEnd_toStartOf="@id/browseButton"
-            app:layout_constraintStart_toEndOf="@id/deleteButton"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/serviceLabel" />
 
         <Button
             android:id="@+id/browseButton"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="Browse"
@@ -199,21 +204,21 @@
             android:background="#D3D3D3"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/deleteButton" />
+            app:layout_constraintStart_toStartOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <!-- Navigation Drawer -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navView"
         android:layout_width="55dp"
         android:layout_height="105dp"
         android:layout_marginTop="40dp"
         android:layout_gravity="end">
-        
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_margin="5dp"
             >
@@ -231,4 +236,5 @@
 
         </LinearLayout>
     </com.google.android.material.navigation.NavigationView>
+
 </androidx.drawerlayout.widget.DrawerLayout>
