@@ -108,8 +108,8 @@ public class Restaurant implements Parcelable{
     public Restaurant(Parcel in) {
         name = in.readString();
         address = in.readString();
-        web = in.readString();
         phone=in.readString();
+        web = in.readString();
         onTable = in.readByte() != 0;
         delivery = in.readByte() != 0;
         takeAway = in.readByte() != 0;
@@ -131,8 +131,8 @@ public class Restaurant implements Parcelable{
     public void writeToParcel(Parcel dest, int flags){
         dest.writeString(name);
         dest.writeString(address);
-        dest.writeString(web);
         dest.writeString(phone);
+        dest.writeString(web);
         dest.writeByte((byte) (onTable ? 1 : 0));
         dest.writeByte((byte) (delivery ? 1 : 0));
         dest.writeByte((byte) (takeAway ? 1 : 0));

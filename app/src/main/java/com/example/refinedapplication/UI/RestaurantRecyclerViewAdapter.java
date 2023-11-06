@@ -19,6 +19,9 @@ import androidx.core.view.GravityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.refinedapplication.Model.Restaurant;
+import com.example.refinedapplication.Model.RestaurantDBHelper;
+import com.example.refinedapplication.Model.RestaurantsListViewModel;
+import com.example.refinedapplication.MyApp;
 import com.example.refinedapplication.R;
 import com.example.refinedapplication.databinding.ActivityAddBinding;
 import com.example.refinedapplication.databinding.ItemViewBinding;
@@ -32,6 +35,7 @@ import java.util.List;
 
 public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<RestaurantRecyclerViewAdapter.RestaurantListVh> {
     private List<Restaurant> restaurantList;
+    private RestaurantDBHelper restaurantDBHelper = MyApp.restaurantDBHelper;
     private Context context;
 
     public RestaurantRecyclerViewAdapter(Context context, List<Restaurant> restaurantList) {
@@ -53,6 +57,12 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Restaura
         holder.itemViewBinding.addressEditText.setText(restaurant.getAddress());
         holder.itemViewBinding.phoneEditText.setText(restaurant.getPhone());
         holder.itemViewBinding.webEditText.setText(restaurant.getWeb());
+
+//        TextView phoneNumberTextView = holder.itemView.findViewById(R.id.phoneEditText);
+//        TextView webLinkTextView = holder.itemView.findViewById(R.id.webEditText);
+//
+//        String phoneNumber = phoneNumberTextView.getText().toString();
+//        String webLink = webLinkTextView.getText().toString();
 
         //Update service icons' colors based on their values
         if(restaurant.isOnTable()){;
@@ -91,29 +101,6 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Restaura
         holder.itemViewBinding.browseButton.setOnClickListener(v->browseWeb(holder, restaurant.getWeb()));
         holder.itemViewBinding.deleteButton.setOnClickListener(v->deleteRestaurant(holder, position));
         holder.itemViewBinding.updateButton.setOnClickListener(v->updateRestaurant(holder, position));
-
-//        holder.itemViewBinding.callButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-////                String phoneNumber = restaurant.getPhone();
-//                Context context = holder.itemView.getContext();
-//                Intent intent = new Intent(Intent.ACTION_DIAL);
-//                intent.setData(Uri.parse("tel:" + phoneBook[position]));
-//                context.startActivity(intent);
-//            }
-//        });
-//
-//        holder.itemViewBinding.browseButton.setOnClickListener((new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-////                String webAddress = restaurant.getWeb();
-//                Context context = holder.itemView.getContext();
-//                Intent intent = new Intent(Intent.ACTION_VIEW);
-//                intent.setData(Uri.parse("https://" + webBook[position]));
-//                context.startActivity(intent);
-//            }
-//        }));
-
     }
 
     @Override
@@ -122,36 +109,14 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Restaura
     }
 
     public void callPhone(RestaurantListVh holder, String phoneNumber){
-        //String phoneNumber = holder.itemViewBinding.phoneEditText.getText().toString();
-        context = holder.itemView.getContext();
-        Intent intent = new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse("tel:" + holder.itemViewBinding.phoneEditText.getText().toString()));
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber));
         context.startActivity(intent);
     }
-
-//    public void callPhone(String phoneNumber) {
-//        // Create an intent to make a phone call
-//        Intent intent = new Intent(Intent.ACTION_DIAL);
-//        intent.setData(Uri.parse("tel:" + phoneNumber));
-//
-//        // Start the phone call intent
-//        context.startActivity(intent);
-//    }
 
     public void browseWeb(RestaurantListVh holder, String webAddress){
-        //String webAddress = holder.itemViewBinding.webEditText.getText().toString();
-        context = holder.itemView.getContext();
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://" + holder.itemViewBinding.webEditText.getText().toString()));
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://" + webAddress));
         context.startActivity(intent);
     }
-
-//    public void browseWeb(String webAddress) {
-//        // Create an intent to open a website in a browser
-//        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://" + webAddress));
-//
-//        // Start the browser intent
-//        context.startActivity(intent);
-//    }
 
     public void deleteRestaurant(RestaurantListVh holder, int position){
         Context context = holder.itemView.getContext();
@@ -161,6 +126,7 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Restaura
         alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogInterface, int i) {
                 restaurantsListViewModel.delete(position);
+                restaurantDBHelper.deleteRestaurant(restaurantList.get(position));
                 RestaurantRecyclerViewAdapter.this.notifyItemRemoved(position);
                 RestaurantRecyclerViewAdapter.this.notifyItemRangeChanged(position, restaurantsListViewModel.getRestaurantsList().size());
                 dialogInterface.dismiss();

@@ -29,7 +29,7 @@ public class RestaurantDBHelper extends SQLiteOpenHelper {
         Log.d("Database", "onUpdate");
     }
 
-    public long inser(Restaurant restaurant){
+    public long insert(Restaurant restaurant){
         ContentValues contentValues;
 
         contentValues = new ContentValues();

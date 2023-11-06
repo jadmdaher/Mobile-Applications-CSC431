@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.refinedapplication.Model.Restaurant;
+import com.example.refinedapplication.Model.RestaurantDBHelper;
 import com.example.refinedapplication.Model.RestaurantsListViewModel;
 import com.example.refinedapplication.MyApp;
 import com.example.refinedapplication.R;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityViewBinding viewBinding;
     private ArrayAdapter<Restaurant> restaurantArrayAdapter;
     private RestaurantRecyclerViewAdapter restaurantRecyclerViewAdapter;
+    private RestaurantDBHelper restaurantDBHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(mainBinding.getRoot());
         //Activity Lifecycle
         Log.d("activity_lifecycle", "MainActivity created");
+        //Database creation
+        restaurantDBHelper = new RestaurantDBHelper(this);
+        ((MyApp)getApplication()).setRestaurantDBHelper(restaurantDBHelper);
     }
 
     //(Start) Menu related methods:
