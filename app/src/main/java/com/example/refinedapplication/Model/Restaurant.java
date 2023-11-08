@@ -4,6 +4,18 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Restaurant implements Parcelable{
+    //Category variable with setters and getters
+    private String category;
+
+    public String getCategory() { return category; }
+    public String setCategory(String category) { return this.category = category; }
+
+    //Rating variable with setters and getters
+    private int rating;
+
+    public int getRating() { return rating; }
+    public int setRating(int rating) { return this.rating = rating; }
+
     //ID variable with setters and getters
     private long id_;
 
@@ -13,6 +25,7 @@ public class Restaurant implements Parcelable{
     public void setId_(long id_) {
         this.id_ = id_;
     }
+
     //Name variable with setters and getters
     private String name;
 
@@ -77,7 +90,8 @@ public class Restaurant implements Parcelable{
     }
 
     //Constructor
-    public Restaurant(String name, String address, String phone, String web, boolean onTable, boolean delivery, boolean takeAway) {
+    public Restaurant(long id_, String name, String address, String phone, String web, boolean onTable, boolean delivery, boolean takeAway, int rating, String category) {
+        this.id_ = id_;
         this.name = name;
         this.address = address;
         this.phone = phone;
@@ -85,6 +99,20 @@ public class Restaurant implements Parcelable{
         this.onTable = onTable;
         this.delivery = delivery;
         this.takeAway = takeAway;
+        this.rating = rating;
+        this.category = category;
+    }
+
+    public Restaurant(String name, String address, String phone, String web, boolean onTable, boolean delivery, boolean takeAway, int rating, String category) {
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+        this.web = web;
+        this.onTable = onTable;
+        this.delivery = delivery;
+        this.takeAway = takeAway;
+        this.rating = rating;
+        this.category = category;
     }
 
     public Restaurant(String name, String address, String phone, String web) {
@@ -142,4 +170,16 @@ public class Restaurant implements Parcelable{
     public int describeContents() {
         return 0;
     }
+
+//    public void update(Restaurant restaurant){
+//        this.name = restaurant.getName();
+//        this.address = restaurant.getAddress();
+//        this.phone = restaurant.getPhone();
+//        this.web = restaurant.getWeb();
+//        this.onTable = restaurant.isOnTable();
+//        this.delivery = restaurant.isDelivery();
+//        this.takeAway = restaurant.isTakeAway();
+//        this.rating = restaurant.getRating();
+//        this.category = restaurant.getCategory();
+//    }
 }

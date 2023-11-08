@@ -6,11 +6,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/myDrawerLayout"
     android:layout_width="match_parent"
-    android:layout_height="245dp"
+    android:layout_height="295dp"
     tools:ignore="HardcodedText">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
@@ -36,14 +35,14 @@
                 android:textSize="24sp"
                 android:textStyle="bold"
                 android:gravity="start"/>
+
             <ImageView
+                android:id="@+id/burgerButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/burger_icon"
-                android:id="@+id/burgerButton"
+                android:clickable="true"
                 android:gravity="end"
-                android:clickable="true">
-            </ImageView>
+                android:src="@drawable/burger_icon"></ImageView>
         </LinearLayout>
 
         <!-- Address -->
@@ -136,7 +135,7 @@
         <!-- Service Label and Icons -->
         <TextView
             android:id="@+id/serviceLabel"
-            android:layout_width="wrap_content"
+            android:layout_width="96dp"
             android:layout_height="wrap_content"
             android:text="Service:"
             android:textColor="#800080"
@@ -150,7 +149,8 @@
             android:layout_width="wrap_content"
             android:layout_height="80dp"
             android:layout_marginTop="10dp"
-            android:src="@drawable/ic_table_fg"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/table"
             app:layout_constraintBottom_toBottomOf="@id/serviceLabel"
             app:layout_constraintStart_toEndOf="@id/serviceLabel"
             app:layout_constraintTop_toTopOf="@id/serviceLabel" />
@@ -160,7 +160,9 @@
             android:layout_width="wrap_content"
             android:layout_height="80dp"
             android:layout_marginTop="10dp"
-            android:src="@drawable/ic_dish_foreground"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/takeaway_icon"
             app:layout_constraintBottom_toBottomOf="@id/serviceLabel"
             app:layout_constraintStart_toEndOf="@id/tableIcon"
             app:layout_constraintTop_toTopOf="@id/serviceLabel" />
@@ -170,10 +172,103 @@
             android:layout_width="wrap_content"
             android:layout_height="80dp"
             android:layout_marginTop="10dp"
-            android:src="@drawable/ic_motorcycle_foreground"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/delivery_icon"
             app:layout_constraintBottom_toBottomOf="@id/serviceLabel"
             app:layout_constraintStart_toEndOf="@id/dishIcon"
             app:layout_constraintTop_toTopOf="@id/serviceLabel" />
+
+        <!-- Rating -->
+        <TextView
+            android:id="@+id/ratingLabel"
+            android:layout_width="96dp"
+            android:layout_height="wrap_content"
+            android:text="Rating:"
+            android:textColor="#800080"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@id/serviceLabel"
+            app:layout_constraintTop_toBottomOf="@id/serviceLabel" />
+
+        <!-- Icons (Placeholder ImageViews) -->
+        <ImageView
+            android:id="@+id/star1"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/star_icon"
+            app:layout_constraintBottom_toBottomOf="@id/ratingLabel"
+            app:layout_constraintStart_toEndOf="@id/ratingLabel"
+            app:layout_constraintTop_toTopOf="@id/ratingLabel" />
+
+        <ImageView
+            android:id="@+id/star2"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/star_icon"
+            app:layout_constraintBottom_toBottomOf="@id/ratingLabel"
+            app:layout_constraintStart_toEndOf="@id/star1"
+            app:layout_constraintTop_toTopOf="@id/ratingLabel" />
+
+        <ImageView
+            android:id="@+id/star3"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/star_icon"
+            app:layout_constraintBottom_toBottomOf="@id/ratingLabel"
+            app:layout_constraintStart_toEndOf="@id/star2"
+            app:layout_constraintTop_toTopOf="@id/ratingLabel" />
+
+        <ImageView
+            android:id="@+id/star4"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/star_icon"
+            app:layout_constraintBottom_toBottomOf="@id/ratingLabel"
+            app:layout_constraintStart_toEndOf="@id/star3"
+            app:layout_constraintTop_toTopOf="@id/ratingLabel" />
+
+        <ImageView
+            android:id="@+id/star5"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/star_icon"
+            app:layout_constraintBottom_toBottomOf="@id/ratingLabel"
+            app:layout_constraintStart_toEndOf="@id/star4"
+            app:layout_constraintTop_toTopOf="@id/ratingLabel" />
+        <!-- Rating -->
+
+        <LinearLayout
+            android:id="@+id/categoryLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ratingLabel">
+
+            <TextView
+                android:id="@+id/categoryText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical|start"
+                android:text="Category:"
+                android:textColor="#800080"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/categoryEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:hint="Category"
+                android:textSize="18sp" />
+        </LinearLayout>
 
         <Button
             android:id="@+id/callButton"
@@ -183,7 +278,7 @@
             android:text="Call"
             app:layout_constraintEnd_toStartOf="@id/browseButton"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/serviceLabel" />
+            app:layout_constraintTop_toBottomOf="@id/categoryLayout" />
 
         <Button
             android:id="@+id/browseButton"
@@ -193,7 +288,7 @@
             android:text="Browse"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/callButton"
-            app:layout_constraintTop_toBottomOf="@id/serviceLabel" />
+            app:layout_constraintTop_toBottomOf="@id/categoryLayout" />
 
         <!-- Thin Grey Line -->
         <View

@@ -11,7 +11,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.core.app.ActivityCompat;
@@ -20,22 +19,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.refinedapplication.Model.Restaurant;
 import com.example.refinedapplication.Model.RestaurantDBHelper;
-import com.example.refinedapplication.Model.RestaurantsListViewModel;
 import com.example.refinedapplication.MyApp;
 import com.example.refinedapplication.R;
-import com.example.refinedapplication.databinding.ActivityAddBinding;
 import com.example.refinedapplication.databinding.ItemViewBinding;
 import android.content.Context;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<RestaurantRecyclerViewAdapter.RestaurantListVh> {
     private List<Restaurant> restaurantList;
-    private RestaurantDBHelper restaurantDBHelper = MyApp.restaurantDBHelper;
+    private RestaurantDBHelper restaurantDBHelper;
     private Context context;
 
     public RestaurantRecyclerViewAdapter(Context context, List<Restaurant> restaurantList) {
@@ -52,12 +46,15 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Restaura
     @Override
     public void onBindViewHolder(RestaurantListVh holder, int position) {
         Restaurant restaurant = restaurantList.get(position);
+        restaurantsListViewModel.getRestaurantDBHelper();
+        restaurantDBHelper = ((MyApp)context.getApplicationContext()).getRestaurantDBHelper();
 //        boolean permissionToCall = context.checkSelfPermission("android.permission.CALL_PHONE") == PackageManager.PERMISSION_GRANTED;
         holder.itemViewBinding.rowName.setText(restaurant.getName());
         holder.itemViewBinding.addressEditText.setText(restaurant.getAddress());
         holder.itemViewBinding.phoneEditText.setText(restaurant.getPhone());
         holder.itemViewBinding.webEditText.setText(restaurant.getWeb());
-
+        setRating(holder, restaurant.getRating());
+        holder.itemViewBinding.categoryEditText.setText(restaurant.getCategory());
 //        TextView phoneNumberTextView = holder.itemView.findViewById(R.id.phoneEditText);
 //        TextView webLinkTextView = holder.itemView.findViewById(R.id.webEditText);
 //
@@ -66,21 +63,21 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Restaura
 
         //Update service icons' colors based on their values
         if(restaurant.isOnTable()){;
-            holder.tableIcon.setImageResource(R.drawable.ic_table_fg);
+            holder.tableIcon.setImageResource(R.drawable.table);
         }else{
-            holder.tableIcon.setImageResource(R.drawable.ic_table_fg_disabled);
+            holder.tableIcon.setImageResource(R.drawable.table_disabled);
         }
 
         if(restaurant.isDelivery()){
-            holder.dishIcon.setImageResource(R.drawable.ic_dish_foreground);
+            holder.dishIcon.setImageResource(R.drawable.delivery_icon);
         }else{
-            holder.dishIcon.setImageResource(R.drawable.ic_dish_foreground_disabled);
+            holder.dishIcon.setImageResource(R.drawable.delivery_icon_disabled);
         }
 
         if(restaurant.isTakeAway()){
-            holder.motorcycleIcon.setImageResource(R.drawable.ic_motorcycle_foreground);
+            holder.motorcycleIcon.setImageResource(R.drawable.takeaway_icon);
         }else{
-            holder.motorcycleIcon.setImageResource(R.drawable.ic_motorcycle_foreground_disabled);
+            holder.motorcycleIcon.setImageResource(R.drawable.takeaway_icon_disabled);
         }
 
         holder.itemViewBinding.burgerButton.setOnClickListener(v->holder.itemViewBinding.myDrawerLayout.openDrawer(holder.itemViewBinding.navView));
@@ -127,6 +124,7 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Restaura
             public void onClick(DialogInterface dialogInterface, int i) {
                 restaurantsListViewModel.delete(position);
                 restaurantDBHelper.deleteRestaurant(restaurantList.get(position));
+                restaurantList.remove(position);
                 RestaurantRecyclerViewAdapter.this.notifyItemRemoved(position);
                 RestaurantRecyclerViewAdapter.this.notifyItemRangeChanged(position, restaurantsListViewModel.getRestaurantsList().size());
                 dialogInterface.dismiss();
@@ -145,6 +143,26 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Restaura
         Intent intent = new Intent(context, UpdateActivity.class);
         intent.putExtra("position", position);
         context.startActivity(intent);
+    }
+
+    public void setRating(RestaurantListVh holder, int rating){
+        ImageView starIcon1 = holder.itemViewBinding.star1;
+        ImageView starIcon2 = holder.itemViewBinding.star2;
+        ImageView starIcon3 = holder.itemViewBinding.star3;
+        ImageView starIcon4 = holder.itemViewBinding.star4;
+        ImageView starIcon5 = holder.itemViewBinding.star5;
+
+        ImageView[] starIcons = new ImageView[]{
+                starIcon1, starIcon2, starIcon3, starIcon4, starIcon5
+        };
+
+        for (int i = 0; i < starIcons.length; i++) {
+            if (i < rating) {
+                starIcons[i].setColorFilter(Color.parseColor("#FFD700"));
+            } else {
+                starIcons[i].setColorFilter(Color.parseColor("#FF999999"));
+            }
+        }
     }
 
     class RestaurantListVh extends RecyclerView.ViewHolder {

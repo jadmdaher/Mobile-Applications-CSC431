@@ -32,30 +32,38 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //Instantiate mainBinding
         mainBinding = ActivityMainBinding.inflate(getLayoutInflater());
-        //Create an intance of RestaurantsListViewModel
+        //Create an instance of RestaurantsListViewModel
         restaurantsListViewModel = new ViewModelProvider(this).get(RestaurantsListViewModel.class);
         ((MyApp)getApplication()).restaurantsListViewModel = restaurantsListViewModel;
         //Add some restaurants
         //addSomeRestaurants();
-        //Set Text
-        mainBinding.totalRestaurant.setText("Total Restaurants: " + restaurantsListViewModel.size());
         //Set view of screen to be activity_main.xml
-        setContentView(mainBinding.getRoot());
-        //Initialize restaurantArrayAdapter
-        restaurantArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, restaurantsListViewModel.getRestaurantsList());
+//        setContentView(mainBinding.getRoot());
 
-        List<Restaurant> restaurantList = restaurantsListViewModel.getRestaurantsList();
+        restaurantDBHelper = new RestaurantDBHelper(this);
+        ((MyApp)getApplication()).setRestaurantDBHelper(restaurantDBHelper);
+
+        //Set Text
+        mainBinding.totalRestaurant.setText("Total Restaurants: " + restaurantDBHelper.restaurantCount());
+
+        restaurantsListViewModel.setRestaurantsList(restaurantDBHelper.getAllRestaurants());
+
+        //Initialize restaurantArrayAdapter
+        restaurantArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, restaurantDBHelper.getAllRestaurants());
+
+        List<Restaurant> restaurantList = restaurantDBHelper.getAllRestaurants();
         restaurantRecyclerViewAdapter = new RestaurantRecyclerViewAdapter(this, restaurantList);
         viewBinding = ActivityViewBinding.inflate(getLayoutInflater());
         viewBinding.rv.setLayoutManager(new LinearLayoutManager(this));
         viewBinding.rv.setAdapter(restaurantRecyclerViewAdapter);
+
+//        restaurantDBHelper.updateRestaurant(new Restaurant("Burger King", "Address 1", "Phone 1", "Web 1", true, false, false, 1, "fast food"));
+
         //Set view of screen to be activity_main.xml
         setContentView(mainBinding.getRoot());
         //Activity Lifecycle
         Log.d("activity_lifecycle", "MainActivity created");
         //Database creation
-        restaurantDBHelper = new RestaurantDBHelper(this);
-        ((MyApp)getApplication()).setRestaurantDBHelper(restaurantDBHelper);
     }
 
     //(Start) Menu related methods:
@@ -100,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         // Update the "Total Restaurant" TextView
         if (mainBinding != null) {
-            int totalRestaurants = restaurantsListViewModel.getRestaurantsList().size();
+            int totalRestaurants = restaurantDBHelper.restaurantCount();
             mainBinding.totalRestaurant.setText(String.valueOf(totalRestaurants));
             restaurantArrayAdapter.notifyDataSetChanged();
         }
