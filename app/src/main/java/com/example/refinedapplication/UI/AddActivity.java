@@ -23,7 +23,7 @@ public class AddActivity extends AppCompatActivity {
     List<Restaurant> restaurantFromDB;
     ArrayAdapter<String> categoryAdapter;
     int ratingGlobal;
-    String categoryGlobal = "Default";
+    String categoryGlobal;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

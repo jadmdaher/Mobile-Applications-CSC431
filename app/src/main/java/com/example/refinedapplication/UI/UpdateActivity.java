@@ -25,7 +25,7 @@ public class UpdateActivity extends AppCompatActivity {
     List<Restaurant> restaurantFromDB;
     ArrayAdapter<String> categoryAdapter;
     int updatedRating;
-    String updatedCategory = "Default";
+    String updatedCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

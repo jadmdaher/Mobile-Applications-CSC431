@@ -85,6 +85,46 @@ public class RestaurantDBHelper extends SQLiteOpenHelper {
         return restaurantList;
     }
 
+    public ArrayList<Restaurant> getRestaurantsByCategory(String categoryName){
+        ArrayList<Restaurant> filteredRestaurants = new ArrayList<>();
+        String query;
+
+        if((categoryName == null)){
+            query = "SELECT * FROM restaurants";
+        } else if ((categoryName.equals("Default"))) {
+            query = "SELECT * FROM restaurants";
+        } else{
+            query = "SELECT * FROM restaurants WHERE category = '" + categoryName + "'";
+        }
+
+        Cursor cursor = getReadableDatabase().rawQuery(query, null);
+
+        cursor.moveToFirst();
+        //
+        while(!cursor.isAfterLast()){
+            long id_ = cursor.getLong(0);
+            String name = cursor.getString(1);
+            String address = cursor.getString(2);
+            String phone = cursor.getString(3);
+            String web = cursor.getString(4);
+            boolean onTable = cursor.getInt(5) == 1;
+            boolean delivery = cursor.getInt(6) == 1;
+            boolean takeaway = cursor.getInt(7) == 1;
+            int rating = cursor.getInt(8);
+            String category = cursor.getString(9);
+            Restaurant restaurant = new Restaurant(id_, name, address, phone, web, onTable, delivery, takeaway, rating, category);
+            restaurant.setDelivery(delivery);
+            restaurant.setOnTable(onTable);
+            restaurant.setTakeAway(takeaway);
+            restaurant.setId_(id_);
+            restaurant.setRating(rating);
+            restaurant.setCategory(category);
+            filteredRestaurants.add(restaurant);
+            cursor.moveToNext();
+        }
+        return filteredRestaurants;
+    }
+
     public void updateRestaurant(Restaurant restaurant){
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", restaurant.getName());

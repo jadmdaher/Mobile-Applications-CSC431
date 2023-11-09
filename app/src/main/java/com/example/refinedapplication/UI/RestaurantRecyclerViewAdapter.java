@@ -33,6 +33,14 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Restaura
         this.restaurantList = restaurantList;
     }
 
+    public List<Restaurant> getRestaurantList(){
+        return restaurantList;
+    }
+
+    public void setRestaurantList(List<Restaurant> restaurantList){
+        this.restaurantList = restaurantList;
+    }
+
     @Override
     public RestaurantListVh onCreateViewHolder(ViewGroup parent, int viewType) {
         ItemViewBinding itemViewBinding = ItemViewBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
@@ -111,7 +119,7 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Restaura
             public void onClick(DialogInterface dialogInterface, int i) {
                 restaurantDBHelper.deleteRestaurant(restaurantList.get(position));
                 restaurantsListViewModel.delete(position);
-//                restaurantList.remove(position);
+                restaurantList.remove(position);
                 RestaurantRecyclerViewAdapter.this.notifyItemRemoved(position);
                 RestaurantRecyclerViewAdapter.this.notifyItemRangeChanged(position, restaurantsListViewModel.getRestaurantsList().size());
                 dialogInterface.dismiss();
