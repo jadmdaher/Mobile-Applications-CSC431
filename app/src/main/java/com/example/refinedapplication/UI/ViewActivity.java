@@ -1,30 +1,18 @@
 package com.example.refinedapplication.UI;
 
-import android.content.Intent;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
 import com.example.refinedapplication.Model.Restaurant;
 import com.example.refinedapplication.Model.RestaurantDBHelper;
 import com.example.refinedapplication.Model.RestaurantsListViewModel;
 import com.example.refinedapplication.MyApp;
-import com.example.refinedapplication.R;
-import com.example.refinedapplication.UI.RestaurantRecyclerViewAdapter;
 import com.example.refinedapplication.databinding.ActivityViewBinding;
-import com.example.refinedapplication.databinding.ItemViewBinding;
-
 import java.util.List;
 
 public class ViewActivity extends AppCompatActivity {
@@ -48,6 +36,7 @@ public class ViewActivity extends AppCompatActivity {
         setContentView(viewBinding.getRoot());
         //Create an instance of RestaurantsListViewModel
         restaurantsListViewModel = ((MyApp)getApplication()).restaurantsListViewModel;
+        //Set the restaurant list from the database
         restaurantsListViewModel.setRestaurantsList(restaurantFromDB);
         //Instantiate myRecyclerViewAdapter and specify constraints for UI elements
         restaurantRecyclerViewAdapter = new RestaurantRecyclerViewAdapter(this, restaurantFromDB);
@@ -58,22 +47,6 @@ public class ViewActivity extends AppCompatActivity {
             viewBinding.rv.setLayoutManager(new LinearLayoutManager(this));
         }
         viewBinding.rv.setAdapter(restaurantRecyclerViewAdapter);
-
-        //Drawer functionality
-//        drawerLayout = findViewById(R.id.myDrawerLayout);
-//        buttonImageView = findViewById(R.id.burgerButton);
-//
-//        buttonImageView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(drawerLayout.isDrawerOpen(findViewById(R.id.navView))){
-//                    drawerLayout.closeDrawer(findViewById(R.id.navView));
-//                }else{
-//                    drawerLayout.openDrawer(findViewById(R.id.navView));
-//                }
-//            }
-//        });
-
     }
 
     //(Start) Activity Lifecycle Methods:
@@ -84,36 +57,4 @@ public class ViewActivity extends AppCompatActivity {
         Log.d("activity_lifecycle", "ViewActivity resumed");
     }
     //(End) Activity Lifecycle Methods.
-
-//    public void callPhone(View view){
-//        callButton = findViewById(R.layout.item_view.);
-//        Intent intent = new Intent(Intent.ACTION_DIAL);
-//        intent.setData(Uri.parse("tel:" ));
-//        startActivity(intent);
-//    }
-
-//    //(Start) Menu related methods:
-//    //The onCreate method for the main_menu.xml file
-//    @Override
-//    public boolean onCreateOptionsMenu (Menu menu){
-//        getMenuInflater().inflate(R.menu.drawer,menu);
-//        return true;
-//    }
-//
-//    /*
-//     * Method used to specify which view
-//     * the user see when a certain item is
-//     * selected from the menu items
-//     */
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item){
-//        if(item.getItemId() == R.id.edit){
-//        }
-//
-//        if(item.getItemId() == R.id.delete){
-//        }
-//
-//        return true;
-//    }
-//    //(End) Menu related methods.
 }

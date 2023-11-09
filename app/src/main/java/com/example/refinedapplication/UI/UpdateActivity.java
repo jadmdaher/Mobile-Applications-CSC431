@@ -1,24 +1,19 @@
 package com.example.refinedapplication.UI;
 
-import static com.example.refinedapplication.MyApp.restaurantDBHelper;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-
 import com.example.refinedapplication.Model.Restaurant;
 import com.example.refinedapplication.Model.RestaurantDBHelper;
 import com.example.refinedapplication.Model.RestaurantsListViewModel;
 import com.example.refinedapplication.MyApp;
-import com.example.refinedapplication.R;
 import com.example.refinedapplication.databinding.ActivityUpdateBinding;
 import com.example.refinedapplication.databinding.ActivityViewBinding;
-
 import java.util.List;
 
 public class UpdateActivity extends AppCompatActivity {
@@ -28,7 +23,9 @@ public class UpdateActivity extends AppCompatActivity {
     private ActivityViewBinding viewBinding;
     RestaurantDBHelper restaurantDBHelper;
     List<Restaurant> restaurantFromDB;
+    ArrayAdapter<String> categoryAdapter;
     int updatedRating;
+    String updatedCategory = "Default";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,15 +33,33 @@ public class UpdateActivity extends AppCompatActivity {
         int position = getIntent().getIntExtra("position", -1);
         updateActivityBinding = ActivityUpdateBinding.inflate(getLayoutInflater());
         setContentView(updateActivityBinding.getRoot());
-
+        //Retrieve the RestaurantDBHelper instance from the application class
         restaurantDBHelper = ((MyApp)getApplication()).getRestaurantDBHelper();
+        //Fill the restaurantFromDB from the Database
         restaurantFromDB = restaurantDBHelper.getAllRestaurants();
-
+        //Retrieve the RestaurantsListViewModel instance from the application class
         restaurantsListViewModel = ((MyApp)getApplication()).restaurantsListViewModel;
+        //Set the restaurant categories from the database
+        restaurantsListViewModel.setRestaurantCategories(restaurantFromDB);
+        //Add the default category to the list of categories so list is not empty
+        restaurantsListViewModel.addRestaurantCategory("Default");
+        //Set the adapter for the autoCompleteTextView
+        categoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, restaurantsListViewModel.getRestaurantCategories());
+        updateActivityBinding.formFields.updateAutoCompleteTextView.setAdapter(categoryAdapter);
+
         restaurantRecyclerViewAdapter = new RestaurantRecyclerViewAdapter(this, restaurantFromDB);
         viewBinding = ActivityViewBinding.inflate(getLayoutInflater());
         viewBinding.rv.setLayoutManager(new LinearLayoutManager(this));
         viewBinding.rv.setAdapter(restaurantRecyclerViewAdapter);
+
+        //Click listener for the updateAutoCompleteTextView
+        updateActivityBinding.formFields.updateAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                updatedCategory = adapterView.getItemAtPosition(i).toString();
+            }
+        });
+
         if(position >= 0){
             updateActivityBinding.updateButton.setOnClickListener(v->update_restaurant(position));
             loadFormData(position);
@@ -99,7 +114,7 @@ public class UpdateActivity extends AppCompatActivity {
         phone = updateActivityBinding.formFields.updatePhone.getText().toString();
         web = updateActivityBinding.formFields.updateWeb.getText().toString();
         rating = updatedRating;
-        category = updateActivityBinding.formFields.updateCategory.getText().toString();
+        category = updatedCategory;
         restaurant = new Restaurant(name, address, phone, web);
         restaurant.setOnTable(updateActivityBinding.formFields.updateOnTable.isChecked());
         restaurant.setDelivery(updateActivityBinding.formFields.updateDelivery.isChecked());
@@ -110,7 +125,6 @@ public class UpdateActivity extends AppCompatActivity {
         restaurant.setId_(restaurantFromDB.get(position).getId_());
         restaurantDBHelper.updateRestaurant(restaurant);
         restaurantsListViewModel.getRestaurantsList().set(position, restaurant);
-
         restaurantFromDB.set(position, restaurant);
         finish();
     }

@@ -15,4 +15,8 @@
     <item
         android:id="@+id/view_menu"
         android:title="View Restaurants" />
+
+    <item
+        android:id="@+id/categories_menu"
+        android:title="Categories" />
 </menu>

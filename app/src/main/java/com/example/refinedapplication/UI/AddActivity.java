@@ -2,24 +2,28 @@ package com.example.refinedapplication.UI;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-
 import com.example.refinedapplication.Model.Restaurant;
 import com.example.refinedapplication.Model.RestaurantDBHelper;
 import com.example.refinedapplication.Model.RestaurantsListViewModel;
 import com.example.refinedapplication.MyApp;
 import com.example.refinedapplication.R;
 import com.example.refinedapplication.databinding.ActivityAddBinding;
+import java.util.List;
 
 public class AddActivity extends AppCompatActivity {
     RestaurantsListViewModel restaurantsListViewModel;
     RestaurantDBHelper restaurantDBHelper;
     private ActivityAddBinding addBinding;
+    List<Restaurant> restaurantFromDB;
+    ArrayAdapter<String> categoryAdapter;
     int ratingGlobal;
+    String categoryGlobal = "Default";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,8 +32,26 @@ public class AddActivity extends AppCompatActivity {
         addBinding = ActivityAddBinding.inflate(getLayoutInflater());
         //Set view of screen to be add_activity.xml
         setContentView(addBinding.getRoot());
-        //Create an intance of RestaurantsListViewModel
+        //Retrieve the RestaurantDBHelper instance from the application class
+        restaurantDBHelper = ((MyApp)getApplication()).getRestaurantDBHelper();
+        //Fill the restaurantFromDB from the Database
+        restaurantFromDB = restaurantDBHelper.getAllRestaurants();
+        //Retrieve the RestaurantsListViewModel instance from the application class
         restaurantsListViewModel = ((MyApp)getApplication()).restaurantsListViewModel;
+        //Set the restaurant categories from the database
+        restaurantsListViewModel.setRestaurantCategories(restaurantFromDB);
+        //Add the default category to the list of categories so list is not empty
+        restaurantsListViewModel.addRestaurantCategory("Default");
+        //Set the adapter for the autoCompleteTextView
+        categoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, restaurantsListViewModel.getRestaurantCategories());
+        addBinding.autoCompleteTextView.setAdapter(categoryAdapter);
+        //Click listener for the autoCompleteTextView
+        addBinding.autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                categoryGlobal = adapterView.getItemAtPosition(i).toString();
+            }
+        });
 
         addBinding.addButton.setOnClickListener(v -> addRestaurant());
         addBinding.starIcon1.setOnClickListener(v -> setStarRating(1));
@@ -48,7 +70,7 @@ public class AddActivity extends AppCompatActivity {
         boolean delivery = addBinding.deliveryID.isChecked();
         boolean takeaway = addBinding.takeAwayID.isChecked();
         int rating = ratingGlobal;
-        String category = addBinding.categoryID.getText().toString();
+        String category = categoryGlobal;
         Restaurant restaurant = new Restaurant(name, address, phone, web, ontable, delivery, takeaway, rating, category);
         restaurantsListViewModel.addRestaurant(restaurant);
         restaurantsListViewModel = ((MyApp)getApplication()).getRestaurantsListViewModel();

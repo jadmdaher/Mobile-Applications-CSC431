@@ -170,16 +170,4 @@ public class Restaurant implements Parcelable{
     public int describeContents() {
         return 0;
     }
-
-//    public void update(Restaurant restaurant){
-//        this.name = restaurant.getName();
-//        this.address = restaurant.getAddress();
-//        this.phone = restaurant.getPhone();
-//        this.web = restaurant.getWeb();
-//        this.onTable = restaurant.isOnTable();
-//        this.delivery = restaurant.isDelivery();
-//        this.takeAway = restaurant.isTakeAway();
-//        this.rating = restaurant.getRating();
-//        this.category = restaurant.getCategory();
-//    }
 }

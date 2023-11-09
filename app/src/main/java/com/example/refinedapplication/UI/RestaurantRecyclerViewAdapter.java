@@ -1,7 +1,6 @@
 package com.example.refinedapplication.UI;
 
 import static com.example.refinedapplication.MyApp.restaurantsListViewModel;
-
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -12,11 +11,9 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.refinedapplication.Model.Restaurant;
 import com.example.refinedapplication.Model.RestaurantDBHelper;
 import com.example.refinedapplication.MyApp;
@@ -24,7 +21,6 @@ import com.example.refinedapplication.R;
 import com.example.refinedapplication.databinding.ItemViewBinding;
 import android.content.Context;
 import android.widget.ImageView;
-
 import java.util.List;
 
 public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<RestaurantRecyclerViewAdapter.RestaurantListVh> {
@@ -48,18 +44,12 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Restaura
         Restaurant restaurant = restaurantList.get(position);
         restaurantsListViewModel.getRestaurantDBHelper();
         restaurantDBHelper = ((MyApp)context.getApplicationContext()).getRestaurantDBHelper();
-//        boolean permissionToCall = context.checkSelfPermission("android.permission.CALL_PHONE") == PackageManager.PERMISSION_GRANTED;
         holder.itemViewBinding.rowName.setText(restaurant.getName());
         holder.itemViewBinding.addressEditText.setText(restaurant.getAddress());
         holder.itemViewBinding.phoneEditText.setText(restaurant.getPhone());
         holder.itemViewBinding.webEditText.setText(restaurant.getWeb());
         setRating(holder, restaurant.getRating());
         holder.itemViewBinding.categoryEditText.setText(restaurant.getCategory());
-//        TextView phoneNumberTextView = holder.itemView.findViewById(R.id.phoneEditText);
-//        TextView webLinkTextView = holder.itemView.findViewById(R.id.webEditText);
-//
-//        String phoneNumber = phoneNumberTextView.getText().toString();
-//        String webLink = webLinkTextView.getText().toString();
 
         //Update service icons' colors based on their values
         if(restaurant.isOnTable()){;
@@ -81,9 +71,6 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Restaura
         }
 
         holder.itemViewBinding.burgerButton.setOnClickListener(v->holder.itemViewBinding.myDrawerLayout.openDrawer(holder.itemViewBinding.navView));
-//        if(permissionToCall) {
-//            holder.itemViewBinding.callButton.setOnClickListener(v -> callPhone(holder, restaurant.getPhone()));
-//        }
 
         holder.itemViewBinding.callButton.setOnClickListener(v -> {
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
@@ -122,9 +109,9 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Restaura
         alert.setMessage("Are you sure you want to delete this restaurant?");
         alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogInterface, int i) {
-                restaurantsListViewModel.delete(position);
                 restaurantDBHelper.deleteRestaurant(restaurantList.get(position));
-                restaurantList.remove(position);
+                restaurantsListViewModel.delete(position);
+//                restaurantList.remove(position);
                 RestaurantRecyclerViewAdapter.this.notifyItemRemoved(position);
                 RestaurantRecyclerViewAdapter.this.notifyItemRangeChanged(position, restaurantsListViewModel.getRestaurantsList().size());
                 dialogInterface.dismiss();
@@ -178,26 +165,6 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Restaura
             tableIcon = itemViewBinding.tableIcon;
             dishIcon = itemViewBinding.dishIcon;
             motorcycleIcon = itemViewBinding.motorcycleIcon;
-
-//            itemViewBinding.callButton.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Context context = itemView.getContext();
-//                    Intent intent = new Intent(Intent.ACTION_DIAL);
-//                    intent.setData(Uri.parse("tel:" + itemViewBinding.phoneEditText.getText().toString()));
-//                    context.startActivity(intent);
-//                }
-//            });
-//
-//            itemViewBinding.browseButton.setOnClickListener((new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Context context = itemView.getContext();
-//                    Intent intent = new Intent(Intent.ACTION_VIEW);
-//                    intent.setData(Uri.parse("https://" + itemViewBinding.webEditText.getText().toString()));
-//                    context.startActivity(intent);
-//                }
-//            }));
         }
     }
 }

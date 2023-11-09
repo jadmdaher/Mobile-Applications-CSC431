@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-
 import java.util.ArrayList;
 
 public class RestaurantDBHelper extends SQLiteOpenHelper {
@@ -119,5 +118,26 @@ public class RestaurantDBHelper extends SQLiteOpenHelper {
         int count = cursor.getInt(0);
 
         return count;
+    }
+
+    //Methods that handle operations on categories
+    public void updateCategory(String oldCategory, String newCategory){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("category", newCategory);
+
+        String whereClause = "category = ?";
+        String[] whereArgs = new String[]{String.valueOf(oldCategory)};
+
+        getWritableDatabase().update("restaurants", contentValues, whereClause, whereArgs);
+    }
+
+    public void deleteCategory(String category){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("category", "Default");
+
+        String whereClause = "category = ?";
+        String[] whereArgs = new String[]{String.valueOf(category)};
+
+        getWritableDatabase().update("restaurants", contentValues, whereClause, whereArgs);
     }
 }

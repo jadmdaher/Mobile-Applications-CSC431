@@ -37,15 +37,13 @@ public class MainActivity extends AppCompatActivity {
         ((MyApp)getApplication()).restaurantsListViewModel = restaurantsListViewModel;
         //Add some restaurants
         //addSomeRestaurants();
-        //Set view of screen to be activity_main.xml
-//        setContentView(mainBinding.getRoot());
-
+        //Create an instance of RestaurantDBHelper
         restaurantDBHelper = new RestaurantDBHelper(this);
         ((MyApp)getApplication()).setRestaurantDBHelper(restaurantDBHelper);
 
         //Set Text
         mainBinding.totalRestaurant.setText("Total Restaurants: " + restaurantDBHelper.restaurantCount());
-
+        //Populating the list in the ViewModel from the Database
         restaurantsListViewModel.setRestaurantsList(restaurantDBHelper.getAllRestaurants());
 
         //Initialize restaurantArrayAdapter
@@ -56,8 +54,6 @@ public class MainActivity extends AppCompatActivity {
         viewBinding = ActivityViewBinding.inflate(getLayoutInflater());
         viewBinding.rv.setLayoutManager(new LinearLayoutManager(this));
         viewBinding.rv.setAdapter(restaurantRecyclerViewAdapter);
-
-//        restaurantDBHelper.updateRestaurant(new Restaurant("Burger King", "Address 1", "Phone 1", "Web 1", true, false, false, 1, "fast food"));
 
         //Set view of screen to be activity_main.xml
         setContentView(mainBinding.getRoot());
@@ -91,6 +87,11 @@ public class MainActivity extends AppCompatActivity {
 
         if(item.getItemId() == R.id.view_menu){
             Intent intent = new Intent(this, ViewActivity.class);
+            startActivity(intent);
+        }
+
+        if(item.getItemId() == R.id.categories_menu){
+            Intent intent = new Intent(this, CategoryOperationsActivity.class);
             startActivity(intent);
         }
 
