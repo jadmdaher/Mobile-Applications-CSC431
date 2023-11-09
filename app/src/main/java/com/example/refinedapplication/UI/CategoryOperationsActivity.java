@@ -36,7 +36,13 @@ public class CategoryOperationsActivity extends AppCompatActivity {
         //Add the default category to the list of categories so list is not empty
         restaurantsListViewModel.addRestaurantCategory("Default");
         //Click listener for the addCategoryButton
-        categoryOperationsBinding.addCategoryButton.setOnClickListener(v -> addCategory(categoryOperationsBinding.addCategory.getText().toString()));
+        categoryOperationsBinding.addCategoryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addCategory(categoryOperationsBinding.addCategory.getText().toString());
+                categoryOperationsBinding.addCategory.setText(null);
+            }
+        });
         //Set the adapter for the modifyAutoCompleteTextView
         categoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, restaurantsListViewModel.getRestaurantCategories());
         categoryOperationsBinding.modifyAutoCompleteTextView.setAdapter(categoryAdapter);
@@ -45,7 +51,14 @@ public class CategoryOperationsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 categoryGlobal = adapterView.getItemAtPosition(i).toString();
-                categoryOperationsBinding.updateCategoryButton.setOnClickListener(v -> updateCategory(categoryGlobal, categoryOperationsBinding.updatedCategory.getText().toString()));
+//                categoryOperationsBinding.updateCategoryButton.setOnClickListener(v -> updateCategory(categoryGlobal, categoryOperationsBinding.updatedCategory.getText().toString()));
+                categoryOperationsBinding.updateCategoryButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        updateCategory(categoryGlobal, categoryOperationsBinding.updatedCategory.getText().toString());
+                        categoryOperationsBinding.updatedCategory.setText(null);
+                    }
+                });
             }
         });
         //Set the adapter for the deleteAutoCompleteTextView
